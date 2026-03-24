@@ -13,10 +13,10 @@ class IntegerRange:
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Any, value: int) -> None:
-        if value not in range(self.min_amount, self.max_amount + 1):
-            raise ValueError()
-        elif not isinstance(value, int):
+        if not isinstance(value, int):
             raise TypeError()
+        elif value not in range(self.min_amount, self.max_amount + 1):
+            raise ValueError()
         else:
             setattr(instance, self.protected_name, value)
 
@@ -61,5 +61,5 @@ class Slide:
                 height=other.height
             )
             return True
-        except ValueError or TypeError:
+        except (TypeError, ValueError):
             return False
