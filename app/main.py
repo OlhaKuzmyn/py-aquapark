@@ -1,15 +1,18 @@
+from typing import Any
+
+
 class IntegerRange:
     def __init__(self, min_amount: int, max_amount: int) -> None:
         self.min_amount = min_amount
         self.max_amount = max_amount
 
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: Any, name: Any) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> int | str:
+    def __get__(self, instance: Any, owner: Any) -> int:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: Any, value: int) -> None:
         if value not in range(self.min_amount, self.max_amount + 1):
             raise ValueError()
         elif not isinstance(value, int):
@@ -46,13 +49,17 @@ class AdultSlideLimitationValidator(SlideLimitationValidator):
 
 
 class Slide:
-    def __init__(self, name: str, limitation_class: SlideLimitationValidator):
+    def __init__(self, name: str, limitation_class: SlideLimitationValidator) -> None:
         self.name = name
         self.limitation_class = limitation_class
 
     def can_access(self, other: Visitor) -> bool:
         try:
-            self.limitation_class(age=other.age, weight=other.weight, height=other.height)
+            self.limitation_class(
+                age=other.age,
+                weight=other.weight,
+                height=other.height
+            )
             return True
         except ValueError or TypeError:
             return False
